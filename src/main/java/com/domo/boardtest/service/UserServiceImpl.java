@@ -36,8 +36,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public boolean checkValidNickname(String nickname) {
-
         return userRepository.existsByNickname(nickname);
-
     }
 }

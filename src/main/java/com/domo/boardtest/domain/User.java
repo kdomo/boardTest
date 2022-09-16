@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static com.domo.boardtest.domain.User.TABLE_PREFIX;
 
 @Setter
 @Getter
@@ -12,11 +11,8 @@ import static com.domo.boardtest.domain.User.TABLE_PREFIX;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-// prefix
-//suffix
-@Table(name = TABLE_PREFIX + "user")
+@Table(name = "TBL_USER")
 public class User {
-    static final String TABLE_PREFIX = "TBL_";
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)

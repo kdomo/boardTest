@@ -21,25 +21,34 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().mvcMatchers(
-                "/users/signup/**",
-                "/swagger-ui/**",
-                "/api/v1/login" // 임시
+//                "/users/signup/**"
+//                "/swagger-ui/**",
+//                "/user/signup",
+//                "/h2-console/**"
+//                "/api/v1/login" // 임시
         );
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .headers().frameOptions().disable()
+//                .headers().frameOptions().disable()
+                .cors()
                 .and()
                 .csrf().disable()
 
                 // 인증 절차를 생략할 API를 지정
+                .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/user/signup", "/user/login", "/h2-console/**").permitAll()
+                .antMatchers("/users/**").permitAll()
 
                 // 그 외 API는 인증 절차 수행
-                .anyRequest().authenticated().and().build();
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .logout().disable()
+                .build();
 
     }
 }
