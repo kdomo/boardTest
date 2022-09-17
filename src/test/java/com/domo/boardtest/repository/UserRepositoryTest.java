@@ -1,7 +1,7 @@
 package com.domo.boardtest.repository;
 
+import com.domo.boardtest.controller.request.UserSignupDto;
 import com.domo.boardtest.domain.User;
-import com.domo.boardtest.dto.UserJoinRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataJpaTest
@@ -23,7 +22,7 @@ class UserRepositoryTest {
     @DisplayName("user가 DB에 저장이 잘 되는지 확인")
     void saveUser(){
         //given
-        User user = new UserJoinRequestDto("user01","password01").toEntity();
+        User user = new UserSignupDto("user01","password01").toEntity();
 
         //when
         User saveUser = userRepository.save(user);
@@ -40,7 +39,7 @@ class UserRepositoryTest {
     @DisplayName("userList가 DB에서 잘 불러와지는지 확인")
     void findAll(){
         //given
-        User user = new UserJoinRequestDto("user01","password01").toEntity();
+        User user = new UserSignupDto("user01","password01").toEntity();
         userRepository.save(user);
 
         //when
@@ -54,7 +53,7 @@ class UserRepositoryTest {
     @DisplayName("nickname으로 DB에서 조회가 잘 되는지 확인")
     void findByNickname(){
         //given
-        User user03 = new UserJoinRequestDto("user03","password03").toEntity();
+        User user03 = new UserSignupDto("user03","password03").toEntity();
         userRepository.save(user03);
 
         //when
@@ -67,7 +66,7 @@ class UserRepositoryTest {
 
     @Test
     void existsByNickname(){
-        User user04 = new UserJoinRequestDto("user04","password04").toEntity();
+        User user04 = new UserSignupDto("user04","password04").toEntity();
         userRepository.save(user04);
 
         //when

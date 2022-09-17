@@ -1,5 +1,6 @@
 package com.domo.boardtest.controller.request;
 
+import com.domo.boardtest.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,10 @@ public class UserSignupDto {
     @NotNull
     private String password;
 
+    public User toEntity(){
+        return User.builder()
+                .nickname(nickname)
+                .password(password)
+                .build();
+    }
 }
