@@ -1,9 +1,14 @@
 package com.domo.boardtest.service;
 
-import com.domo.boardtest.controller.request.UserSignupDto;
+import com.domo.boardtest.controller.request.UserRequestDto;
+import com.domo.boardtest.controller.response.UserResponseDto;
+
+import javax.servlet.http.HttpSession;
 
 public interface UserService {
-    void signup(UserSignupDto dto);
+    void signup(UserRequestDto dto);
 
-    boolean checkValidNickname(String nickname);
+    boolean checkValidUserId(String userId);
+
+    UserResponseDto login(String userId, String userPassword);
 }

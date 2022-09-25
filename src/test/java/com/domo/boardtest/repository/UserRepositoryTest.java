@@ -1,6 +1,6 @@
 package com.domo.boardtest.repository;
 
-import com.domo.boardtest.controller.request.UserSignupDto;
+import com.domo.boardtest.controller.request.UserRequestDto;
 import com.domo.boardtest.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class UserRepositoryTest {
     @DisplayName("user가 DB에 저장이 잘 되는지 확인")
     void saveUser(){
         //given
-        User user = new UserSignupDto("user01","password01").toEntity();
+        User user = new UserRequestDto("userId01","userName01","password01").toEntity();
 
         //when
         User saveUser = userRepository.save(user);
@@ -39,7 +39,7 @@ class UserRepositoryTest {
     @DisplayName("userList가 DB에서 잘 불러와지는지 확인")
     void findAll(){
         //given
-        User user = new UserSignupDto("user01","password01").toEntity();
+        User user = new UserRequestDto("userId01","userName01","password01").toEntity();
         userRepository.save(user);
 
         //when
@@ -53,7 +53,7 @@ class UserRepositoryTest {
     @DisplayName("nickname으로 DB에서 조회가 잘 되는지 확인")
     void findByNickname(){
         //given
-        User user03 = new UserSignupDto("user03","password03").toEntity();
+        User user03 = new UserRequestDto("user03","password03").toEntity();
         userRepository.save(user03);
 
         //when
@@ -66,7 +66,7 @@ class UserRepositoryTest {
 
     @Test
     void existsByNickname(){
-        User user04 = new UserSignupDto("user04","password04").toEntity();
+        User user04 = new UserRequestDto("user04","password04").toEntity();
         userRepository.save(user04);
 
         //when
