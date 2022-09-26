@@ -5,6 +5,7 @@ import com.domo.boardtest.controller.response.UserResponseDto;
 import com.domo.boardtest.domain.User;
 import com.domo.boardtest.exception.AlreadyExistNicknameException;
 import com.domo.boardtest.repository.UserRepository;
+import com.domo.boardtest.utils.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,30 @@ public class UserServiceImpl implements UserService {
             //Exception 수정해야 함
             throw new RuntimeException();
         }
-
+        User user = optionalUser.get();
+        return UserResponseDto.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userPassword(user.getUserPassword())
+                .build();
     }
+
+    @Override
+    public UserResponseDto getUserInfo(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(!optionalUser.isPresent()){
+            throw new RuntimeException();
+        }
+        User user = optionalUser.get();
+
+        return UserResponseDto.builder()
+                .id(user.getId())
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .userPassword(user.getUserPassword())
+                .build();
+    }
+
+
 }

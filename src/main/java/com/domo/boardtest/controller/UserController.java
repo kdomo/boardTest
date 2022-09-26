@@ -20,17 +20,20 @@ import javax.servlet.http.HttpSession;
 public class UserController {
 
     private final UserService userService;
-//    private final HttpSession httpSession;
 
     @GetMapping("/userInfo")
     public ResponseEntity<ResultDto> userInfo(HttpSession httpSession) {
+
         Long id = SessionUtil.getLoginId(httpSession);
-        userService.getUserInfo(id);
-        return new ResponseEntity<>(ResultDto.builder().code(1).msg("hi").build(), HttpStatus.OK);
+        if(id == null) {
+            return new ResponseEntity<>(ResultDto.builder().code(0).msg("로그인을 해주세요.").build(), HttpStatus.BAD_REQUEST);
+        }
+        UserResponseDto user = userService.getUserInfo(id);
+        return new ResponseEntity<>(ResultDto.builder().code(1).msg("회원 조회 성공").body(user).build(), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ResultDto> signup(UserRequestDto requestDto) {
+    public ResponseEntity<ResultDto> signup(@RequestBody UserRequestDto requestDto) {
         log.info("UserController : signup");
         userService.signup(requestDto);
         return new ResponseEntity<>(ResultDto.builder().code(1).msg("회원가입 성공").body(null).build(), HttpStatus.OK);
@@ -38,18 +41,24 @@ public class UserController {
 
     //2.로그인
     @PostMapping("/login")
-    public ResponseEntity<ResultDto> login(HttpSession session, @RequestBody String  userId, @RequestBody String userPassword) {
+    public ResponseEntity<ResultDto> login(HttpSession session, @RequestBody UserRequestDto requestDto) {
         log.info("userController : login");
-        UserResponseDto dto = userService.login(userId, userPassword);
-        SessionUtil.setLoginId(session, dto.getId());
-        return new ResponseEntity<>(ResultDto.builder().code(1).msg("로그인 성공").body(null).build(), HttpStatus.OK);
+        try {
+            UserResponseDto dto = userService.login(requestDto.getUserId(), requestDto.getUserPassword());
+            SessionUtil.setLoginId(session, dto.getId());
+            return new ResponseEntity<>(ResultDto.builder().code(1).msg("로그인 성공").body(null).build(), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     //3.로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<ResultDto> logout(@RequestBody String  userId) {
+    public ResponseEntity<ResultDto> logout(HttpSession session) {
         log.info("userController : logout");
-        httpSession.removeAttribute(userId);
+        SessionUtil.logout(session);
         return new ResponseEntity<>(ResultDto.builder().code(1).msg("로그아웃 성공").body(null).build(), HttpStatus.OK);
     }
 }

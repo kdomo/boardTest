@@ -2,6 +2,7 @@ package com.domo.boardtest.controller.response;
 
 import com.domo.boardtest.domain.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserResponseDto {
     @NotNull
     private Long id;

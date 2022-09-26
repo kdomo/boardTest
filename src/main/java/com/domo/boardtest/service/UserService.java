@@ -11,4 +11,6 @@ public interface UserService {
     boolean checkValidUserId(String userId);
 
     UserResponseDto login(String userId, String userPassword);
+
+    UserResponseDto getUserInfo(Long id);
 }
