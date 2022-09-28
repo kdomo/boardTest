@@ -49,9 +49,8 @@ public class UserController {
             return new ResponseEntity<>(ResultDto.builder().code(1).msg("로그인 성공").body(null).build(), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
+            return new ResponseEntity<>(ResultDto.builder().code(0).msg("로그인 실패").body(null).build(), HttpStatus.OK);
         }
-        return null;
-
     }
 
     //3.로그아웃
