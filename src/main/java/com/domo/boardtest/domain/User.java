@@ -18,10 +18,18 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = false)
-    private String nickname;
+    @Column(nullable = false)
+    private String userId;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(nullable = false)
+    private String userName;
+
+    @Column(nullable = false)
+    private String userPassword;
+
+    //Long id
+    //String userId;
+    //String userName;
+    //String userPassword;
 
 }

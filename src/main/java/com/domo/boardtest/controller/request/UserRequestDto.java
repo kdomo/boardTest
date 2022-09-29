@@ -5,24 +5,27 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserSignupDto {
+public class UserRequestDto {
 
     @NotNull
-    private String nickname;
+    private String userId;
 
     @NotNull
-    private String password;
+    private String userName;
+
+    @NotNull
+    private String userPassword;
 
     public User toEntity(){
         return User.builder()
-                .nickname(nickname)
-                .password(password)
+                .userId(userId)
+                .userName(userName)
+                .userPassword(userPassword)
                 .build();
     }
 }
