@@ -4,14 +4,19 @@ import com.domo.boardtest.controller.request.UserRequestDto;
 import com.domo.boardtest.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 
-@DataJpaTest
+@SpringBootTest
 class UserRepositoryTest {
 
     @Autowired
@@ -26,7 +31,10 @@ class UserRepositoryTest {
 
         //when
         User saveUser = userRepository.save(user);
-
+        System.out.println(saveUser.getId());
+        System.out.println(saveUser.getUserId());
+        System.out.println(saveUser.getUserName());
+        System.out.println(saveUser.getUserPassword());
         //then
         assertThat(saveUser).isSameAs(user);
         assertThat(saveUser.getUserId()).isEqualTo(user.getUserId());
@@ -40,40 +48,33 @@ class UserRepositoryTest {
     @DisplayName("userList가 DB에서 잘 불러와지는지 확인")
     void findAll(){
         //given
-        User user = new UserRequestDto("userId01","userName01","password01").toEntity();
+        User user = new UserRequestDto("userId02","userName02","password02").toEntity();
         userRepository.save(user);
 
         //when
         List<User> userList = userRepository.findAll();
 
         //then
-        assertThat(userList.size()).isEqualTo(1);
+        User getUser = userList.get(userList.size()-1);
+
+        assertThat(getUser.getUserId()).isEqualTo(user.getUserId());
+        assertThat(getUser.getUserName()).isEqualTo(user.getUserName());
+        assertThat(getUser.getUserPassword()).isEqualTo(user.getUserPassword());
+        assertThat(getUser.getId()).isNotNull();
     }
 
-//    @Test
-//    @DisplayName("nickname으로 DB에서 조회가 잘 되는지 확인")
-//    void findByNickname(){
-//        //given
-//        User user03 = new UserRequestDto("userId03","userName03","password03").toEntity();
-//        userRepository.save(user03);
-//
-//        //when
-//        User user02 = userRepository.findByNickname("user03").get();
-//
-//        //then
-//        assertThat(user02.getNickname()).isEqualTo("user03");
-//        assertThat(user02.getPassword()).isEqualTo("password03");
-//    }
 
-//    @Test
-//    void existsByNickname(){
-//        User user04 = new UserRequestDto("user04","password04").toEntity();
-//        userRepository.save(user04);
-//
-//        //when
-//        boolean exists = userRepository.existsByNickname("user04");
-//
-//        //then
-//        assertThat(exists).isTrue();
-//    }
+    @Test
+    @DisplayName("userId로 중복확인이 잘 되는지 확인")
+    void existsByUserId() {
+        //given
+        User user = new UserRequestDto("userId01","userName01","password01").toEntity();
+        userRepository.save(user);
+
+        //when
+        boolean exists = userRepository.existsByUserId(user.getUserId());
+
+        assertThat(exists).isEqualTo(true);
+        assertThat(false).isEqualTo(userRepository.existsByUserId("userId02"));
+    }
 }
